@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voorraadbeheer — Koreman Maastricht</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="topbar">Voorraadbeheer — Intern systeem Koreman Maastricht</div>
+
+  <header class="header">
+    <div class="brand">
+      <div class="brand-name">Koreman</div>
+      <div class="brand-sub">Maastricht — Vloeren &amp; Interieur</div>
+    </div>
+    <button class="btn-add" onclick="openModal()">+ Artikel toevoegen</button>
+  </header>
+
+  <main class="main">
+    <h1 class="page-title">Voorraadoverzicht</h1>
+    <p class="page-sub">Beheer uw collectie vloerkleden, tapijten en interieurtextiel</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Totaal artikelen</div>
+        <div class="stat-value" id="s-totaal">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Op voorraad</div>
+        <div class="stat-value goed" id="s-ok">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Bijna op</div>
+        <div class="stat-value laag" id="s-laag">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Bestellen</div>
+        <div class="stat-value slecht" id="s-leeg">0</div>
+      </div>
+    </div>
+
+    <div class="alert" id="alert-bar"></div>
+
+    <div class="toolbar">
+      <input type="text" id="zoek" placeholder="Zoek op naam, categorie..." oninput="render()" />
+      <select id="f-cat" onchange="render()">
+        <option value="">Alle categorieën</option>
+        <option>Vloerkleed</option>
+        <option>Tapijt</option>
+        <option>Gordijn</option>
+        <option>Loper</option>
+        <option>Overig</option>
+      </select>
+      <select id="f-status" onchange="render()">
+        <option value="">Alle statussen</option>
+        <option value="leeg">Bestellen</option>
+        <option value="laag">Bijna op</option>
+        <option value="ok">Op voorraad</option>
+      </select>
+    </div>
+
+    <div class="tabel-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="c-naam">Artikel</th>
+            <th class="c-cat">Categorie</th>
+            <th class="c-maat">Afmeting</th>
+            <th class="c-stock">Voorraad</th>
+            <th class="c-min">Minimum</th>
+            <th class="c-status">Status</th>
+            <th class="c-acties"></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div class="modal-bg" id="modal-bg">
+    <div class="modal">
+      <h2 id="modal-titel">Nieuw artikel</h2>
+      <div class="form-row">
+        <label>Artikelnaam</label>
+        <input type="text" id="f-naam" placeholder="Bijv. Perzisch Wollen Kleed — Bordeaux" />
+      </div>
+      <div class="form-2col">
+        <div class="form-row">
+          <label>Categorie</label>
+          <select id="f-cat-m">
+            <option>Vloerkleed</option>
+            <option>Tapijt</option>
+            <option>Gordijn</option>
+            <option>Loper</option>
+            <option>Overig</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Afmeting</label>
+          <input type="text" id="f-maat" placeholder="Bijv. 200×300 cm" />
+        </div>
+      </div>
+      <div class="form-2col">
+        <div class="form-row">
+          <label>Huidige voorraad (stuks)</label>
+          <input type="number" id="f-stock" min="0" value="0" />
+        </div>
+        <div class="form-row">
+          <label>Minimum bestelgrens</label>
+          <input type="number" id="f-min" min="0" value="2" />
+        </div>
+      </div>
+      <div class="modal-btns">
+        <button class="btn-annul" onclick="closeModal()">Annuleren</button>
+        <button class="btn-opsl" onclick="opslaan()">Opslaan</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

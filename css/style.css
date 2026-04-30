@@ -1,0 +1,449 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Jost:wght@300;400;500&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --goud: #B8965A;
+  --goud-licht: #f5edd9;
+  --donker: #1c1a17;
+  --tekst: #2e2b26;
+  --subtekst: #7a7369;
+  --rand: #e5dfd5;
+  --bg: #faf8f5;
+  --wit: #ffffff;
+}
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--bg);
+  color: var(--tekst);
+  font-size: 14px;
+  min-height: 100vh;
+}
+
+/* ── Topbar ── */
+.topbar {
+  background: var(--donker);
+  color: #aaa;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-align: center;
+  padding: 7px 1rem;
+  font-weight: 300;
+}
+
+/* ── Header ── */
+.header {
+  background: var(--wit);
+  border-bottom: 1px solid var(--rand);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--donker);
+  text-transform: uppercase;
+}
+
+.brand-sub {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--goud);
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.btn-add {
+  background: var(--donker);
+  color: white;
+  border: none;
+  padding: 0 20px;
+  height: 38px;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-add:hover {
+  background: var(--goud);
+}
+
+/* ── Main ── */
+.main {
+  padding: 2.5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 300;
+  color: var(--donker);
+  margin-bottom: 0.25rem;
+}
+
+.page-sub {
+  font-size: 12px;
+  color: var(--subtekst);
+  letter-spacing: 0.06em;
+  margin-bottom: 2rem;
+}
+
+/* ── Stats ── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--rand);
+  border: 1px solid var(--rand);
+  margin-bottom: 2rem;
+}
+
+.stat {
+  background: var(--wit);
+  padding: 1.25rem 1.5rem;
+}
+
+.stat-label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--subtekst);
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--donker);
+  line-height: 1;
+}
+
+.stat-value.goed  { color: #2e6b3e; }
+.stat-value.laag  { color: #b8760a; }
+.stat-value.slecht { color: #c0392b; }
+
+/* ── Alert ── */
+.alert {
+  background: #fffaf0;
+  border-left: 3px solid var(--goud);
+  padding: 10px 16px;
+  font-size: 13px;
+  color: #7a5c10;
+  margin-bottom: 1.5rem;
+  display: none;
+  line-height: 1.6;
+}
+
+.alert.show { display: block; }
+
+/* ── Toolbar ── */
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.toolbar input[type="text"] {
+  flex: 1;
+  min-width: 200px;
+  border: 1px solid var(--rand);
+  background: var(--wit);
+  padding: 0 14px;
+  height: 38px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  color: var(--tekst);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.toolbar input[type="text"]:focus {
+  border-color: var(--goud);
+}
+
+.toolbar select {
+  border: 1px solid var(--rand);
+  background: var(--wit);
+  padding: 0 14px;
+  height: 38px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  color: var(--tekst);
+  outline: none;
+  min-width: 170px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.toolbar select:focus {
+  border-color: var(--goud);
+}
+
+/* ── Tabel ── */
+.tabel-wrap {
+  background: var(--wit);
+  border: 1px solid var(--rand);
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--subtekst);
+  font-weight: 500;
+  border-bottom: 1px solid var(--rand);
+  background: var(--bg);
+  white-space: nowrap;
+}
+
+.c-naam   { width: 30%; }
+.c-cat    { width: 14%; }
+.c-maat   { width: 14%; }
+.c-stock  { width: 10%; }
+.c-min    { width: 10%; }
+.c-status { width: 14%; }
+.c-acties { width: 8%; }
+
+tbody tr {
+  border-bottom: 1px solid var(--rand);
+  transition: background 0.15s;
+}
+
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #faf7f2; }
+
+tbody td {
+  padding: 13px 16px;
+  font-size: 13px;
+  color: var(--tekst);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.naam-cel {
+  font-weight: 500;
+  color: var(--donker);
+}
+
+.cat-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--rand);
+  color: var(--subtekst);
+  background: var(--bg);
+}
+
+.status-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.dot-ok   { background: #2e6b3e; }
+.dot-laag { background: #b8760a; }
+.dot-leeg { background: #c0392b; }
+
+.status-ok   { color: #2e6b3e; }
+.status-laag { color: #b8760a; }
+.status-leeg { color: #c0392b; }
+
+.acties-cel {
+  display: flex;
+  gap: 4px;
+}
+
+.btn-ic {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--rand);
+  background: none;
+  cursor: pointer;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--subtekst);
+  transition: all 0.15s;
+}
+
+.btn-ic:hover {
+  border-color: var(--goud);
+  color: var(--goud);
+  background: var(--goud-licht);
+}
+
+.btn-ic.rood:hover {
+  border-color: #c0392b;
+  color: #c0392b;
+  background: #fdecea;
+}
+
+.leeg-cel {
+  text-align: center;
+  padding: 3rem;
+  color: var(--subtekst);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+}
+
+/* ── Modal ── */
+.modal-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(28, 26, 23, 0.55);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-bg.open { display: flex; }
+
+.modal {
+  background: var(--wit);
+  width: 440px;
+  max-width: 95vw;
+  padding: 2rem;
+  border-top: 3px solid var(--goud);
+}
+
+.modal h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  color: var(--donker);
+}
+
+.form-row {
+  margin-bottom: 1.1rem;
+}
+
+.form-row label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--subtekst);
+  margin-bottom: 6px;
+}
+
+.form-row input,
+.form-row select {
+  width: 100%;
+  border: 1px solid var(--rand);
+  background: var(--wit);
+  padding: 0 12px;
+  height: 38px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  color: var(--tekst);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-row input:focus,
+.form-row select:focus {
+  border-color: var(--goud);
+}
+
+.form-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.modal-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 1.75rem;
+  justify-content: flex-end;
+}
+
+.btn-annul {
+  background: none;
+  border: 1px solid var(--rand);
+  color: var(--subtekst);
+  padding: 0 18px;
+  height: 38px;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.btn-annul:hover {
+  border-color: var(--tekst);
+  color: var(--tekst);
+}
+
+.btn-opsl {
+  background: var(--donker);
+  color: white;
+  border: none;
+  padding: 0 18px;
+  height: 38px;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.btn-opsl:hover {
+  background: var(--goud);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .main { padding: 1.5rem 1rem; }
+  .header { padding: 0 1rem; }
+}
