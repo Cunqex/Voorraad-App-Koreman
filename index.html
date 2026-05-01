@@ -16,16 +16,18 @@
       <div class="brand-sub">Maastricht — Vloeren &amp; Interieur</div>
     </div>
     <nav class="nav">
-      <button class="nav-btn active" onclick="toonPagina('voorraad')">Voorraad</button>
-      <button class="nav-btn" onclick="toonPagina('categorieen')">Categorieën</button>
+      <button class="nav-btn active" data-pagina="voorraad" onclick="toonPagina('voorraad')">Voorraad</button>
+      <button class="nav-btn" data-pagina="categorieen" onclick="toonPagina('categorieen')">Categorieën</button>
+      <button class="nav-btn" data-pagina="locaties" onclick="toonPagina('locaties')">Locaties</button>
+      <button class="nav-btn" data-pagina="leveranciers" onclick="toonPagina('leveranciers')">Leveranciers</button>
     </nav>
     <div class="header-right">
-      <button class="btn-export" id="btn-export" onclick="exporteerBestellijst()">↓ Bestellijst</button>
-      <button class="btn-add" id="btn-hoofdactie" onclick="openModal()">+ Artikel toevoegen</button>
+      <button class="btn-export" onclick="exporteerBestellijst()">↓ Bestellijst</button>
+      <button class="btn-add" onclick="openModal()">+ Artikel toevoegen</button>
     </div>
   </header>
 
-  <!-- Voorraad pagina -->
+  <!-- ── Voorraad pagina ── -->
   <main class="main" id="pagina-voorraad">
     <h1 class="page-title">Voorraadoverzicht</h1>
     <p class="page-sub">Beheer uw collectie vloerkleden, tapijten en interieurtextiel</p>
@@ -35,13 +37,15 @@
       <div class="stat"><div class="stat-label">Op voorraad</div><div class="stat-value goed" id="s-ok">0</div></div>
       <div class="stat"><div class="stat-label">Bijna op</div><div class="stat-value laag" id="s-laag">0</div></div>
       <div class="stat"><div class="stat-label">Bestellen</div><div class="stat-value slecht" id="s-leeg">0</div></div>
+      <div class="stat"><div class="stat-label">Voorraadwaarde</div><div class="stat-value" id="s-waarde" style="font-size:22px">€ 0</div></div>
     </div>
 
     <div class="alert" id="alert-bar"></div>
 
     <div class="toolbar">
-      <input type="text" id="zoek" placeholder="Zoek op naam, categorie..." oninput="render()" />
+      <input type="text" id="zoek" placeholder="Zoek op naam..." oninput="render()" />
       <select id="f-cat" onchange="render()"><option value="">Alle categorieën</option></select>
+      <select id="f-loc" onchange="render()"><option value="">Alle locaties</option></select>
       <select id="f-status" onchange="render()">
         <option value="">Alle statussen</option>
         <option value="leeg">Bestellen</option>
@@ -54,11 +58,13 @@
       <table>
         <thead>
           <tr>
+            <th class="c-img"></th>
             <th class="c-naam">Artikel</th>
             <th class="c-cat">Categorie</th>
-            <th class="c-maat">Afmeting</th>
+            <th class="c-loc">Locatie</th>
             <th class="c-stock">Voorraad</th>
             <th class="c-min">Minimum</th>
+            <th class="c-prijs">Verkoopprijs</th>
             <th class="c-status">Status</th>
             <th class="c-acties"></th>
           </tr>
@@ -68,46 +74,79 @@
     </div>
   </main>
 
-  <!-- Categorieën pagina -->
+  <!-- ── Categorieën pagina ── -->
   <main class="main verborgen" id="pagina-categorieen">
     <h1 class="page-title">Categorieën</h1>
     <p class="page-sub">Beheer de productcategorieën van uw assortiment</p>
-
     <div class="cat-invoer">
       <input type="text" id="nieuwe-cat" placeholder="Nieuwe categorie, bijv. Karpet" />
       <button class="btn-add" onclick="voegCatToe()">+ Toevoegen</button>
     </div>
-
     <div class="tabel-wrap">
       <table>
-        <thead>
-          <tr>
-            <th style="width:60%">Categorie</th>
-            <th style="width:25%">Aantal artikelen</th>
-            <th style="width:15%"></th>
-          </tr>
-        </thead>
+        <thead><tr><th style="width:60%">Categorie</th><th style="width:25%">Aantal artikelen</th><th style="width:15%"></th></tr></thead>
         <tbody id="tbody-cat"></tbody>
       </table>
     </div>
   </main>
 
-  <!-- Artikel modal -->
+  <!-- ── Locaties pagina ── -->
+  <main class="main verborgen" id="pagina-locaties">
+    <h1 class="page-title">Locaties</h1>
+    <p class="page-sub">Beheer de opslag- en showroomlocaties</p>
+    <div class="cat-invoer">
+      <input type="text" id="nieuwe-loc" placeholder="Nieuwe locatie, bijv. Showroom begane grond" />
+      <button class="btn-add" onclick="voegLocToe()">+ Toevoegen</button>
+    </div>
+    <div class="tabel-wrap">
+      <table>
+        <thead><tr><th style="width:60%">Locatie</th><th style="width:25%">Aantal artikelen</th><th style="width:15%"></th></tr></thead>
+        <tbody id="tbody-loc"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- ── Leveranciers pagina ── -->
+  <main class="main verborgen" id="pagina-leveranciers">
+    <h1 class="page-title">Leveranciers</h1>
+    <p class="page-sub">Contactgegevens van uw leveranciers</p>
+    <div class="tabel-wrap">
+      <table>
+        <thead><tr><th style="width:25%">Naam</th><th style="width:18%">Telefoon</th><th style="width:22%">E-mail</th><th style="width:20%">Website</th><th style="width:15%"></th></tr></thead>
+        <tbody id="tbody-lev"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- ── Artikel modal ── -->
   <div class="modal-bg" id="modal-bg">
-    <div class="modal">
+    <div class="modal modal-groot">
       <h2 id="modal-titel">Nieuw artikel</h2>
-      <div class="form-row">
-        <label>Artikelnaam</label>
-        <input type="text" id="f-naam" placeholder="Bijv. Perzisch Wollen Kleed — Bordeaux" />
-      </div>
-      <div class="form-2col">
+      <div class="form-row"><label>Artikelnaam</label><input type="text" id="f-naam" placeholder="Bijv. Perzisch Wollen Kleed — Bordeaux" /></div>
+      <div class="form-3col">
         <div class="form-row"><label>Categorie</label><select id="f-cat-m"></select></div>
-        <div class="form-row"><label>Afmeting</label><input type="text" id="f-maat" placeholder="Bijv. 200×300 cm" /></div>
+        <div class="form-row"><label>Locatie</label><select id="f-loc-m"></select></div>
+        <div class="form-row"><label>Leverancier</label><select id="f-lev-m"></select></div>
       </div>
       <div class="form-2col">
-        <div class="form-row"><label>Huidige voorraad (stuks)</label><input type="number" id="f-stock" min="0" value="0" /></div>
-        <div class="form-row"><label>Minimum bestelgrens</label><input type="number" id="f-min" min="0" value="2" /></div>
+        <div class="form-row"><label>Afmeting</label><input type="text" id="f-maat" placeholder="200×300 cm" /></div>
+        <div class="form-row"><label>Huidige voorraad</label><input type="number" id="f-stock" min="0" value="0" /></div>
       </div>
+      <div class="form-3col">
+        <div class="form-row"><label>Minimum bestelgrens</label><input type="number" id="f-min" min="0" value="2" /></div>
+        <div class="form-row"><label>Inkoopprijs (€)</label><input type="number" id="f-inkoopprijs" min="0" step="0.01" value="0" /></div>
+        <div class="form-row"><label>Verkoopprijs (€)</label><input type="number" id="f-verkoopprijs" min="0" step="0.01" value="0" /></div>
+      </div>
+      <div class="form-row">
+        <label>Afbeelding</label>
+        <div class="upload-wrap">
+          <input type="file" id="f-afbeelding-bestand" accept="image/*" />
+          <label for="f-afbeelding-bestand" class="upload-label" id="upload-label">📁 Klik om een afbeelding te kiezen</label>
+        </div>
+        <div class="upload-status" id="upload-status"></div>
+      </div>
+      <img id="afbeelding-preview" src="" alt="Preview" class="afbeelding-preview" style="display:none" />
+      <div class="form-row"><label>Notitie</label><textarea id="f-notitie" placeholder="Extra informatie, kleurcode, levertijd..." rows="2"></textarea></div>
       <div class="modal-btns">
         <button class="btn-annul" onclick="closeModal()">Annuleren</button>
         <button class="btn-opsl" onclick="opslaan()">Opslaan</button>
@@ -115,18 +154,41 @@
     </div>
   </div>
 
-  <!-- Categorie bewerken modal -->
+  <!-- ── Categorie modal ── -->
   <div class="modal-bg" id="modal-cat-bg">
-    <div class="modal">
-      <h2>Categorie bewerken</h2>
-      <div class="form-row">
-        <label>Naam</label>
-        <input type="text" id="f-cat-naam" />
+    <div class="modal"><h2>Categorie bewerken</h2>
+      <div class="form-row"><label>Naam</label><input type="text" id="f-cat-naam" /></div>
+      <div class="modal-btns"><button class="btn-annul" onclick="closeCatModal()">Annuleren</button><button class="btn-opsl" onclick="slaatCatOp()">Opslaan</button></div>
+    </div>
+  </div>
+
+  <!-- ── Locatie modal ── -->
+  <div class="modal-bg" id="modal-loc-bg">
+    <div class="modal"><h2>Locatie bewerken</h2>
+      <div class="form-row"><label>Naam</label><input type="text" id="f-loc-naam" /></div>
+      <div class="modal-btns"><button class="btn-annul" onclick="closeLocModal()">Annuleren</button><button class="btn-opsl" onclick="slaatLocOp()">Opslaan</button></div>
+    </div>
+  </div>
+
+  <!-- ── Leverancier modal ── -->
+  <div class="modal-bg" id="modal-lev-bg">
+    <div class="modal"><h2 id="modal-lev-titel">Nieuwe leverancier</h2>
+      <div class="form-row"><label>Naam</label><input type="text" id="f-lev-naam" placeholder="Bijv. Van den Berg Tapijten" /></div>
+      <div class="form-2col">
+        <div class="form-row"><label>Telefoon</label><input type="text" id="f-lev-tel" placeholder="+31 43 ..." /></div>
+        <div class="form-row"><label>E-mail</label><input type="text" id="f-lev-email" placeholder="info@..." /></div>
       </div>
-      <div class="modal-btns">
-        <button class="btn-annul" onclick="closeCatModal()">Annuleren</button>
-        <button class="btn-opsl" onclick="slaatCatOp()">Opslaan</button>
-      </div>
+      <div class="form-row"><label>Website</label><input type="text" id="f-lev-website" placeholder="https://..." /></div>
+      <div class="modal-btns"><button class="btn-annul" onclick="closeLevModal()">Annuleren</button><button class="btn-opsl" onclick="slaatLevOp()">Opslaan</button></div>
+    </div>
+  </div>
+
+  <!-- ── Lightbox ── -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-inner">
+      <img id="lightbox-img" src="" alt="" />
+      <div id="lightbox-naam" class="lightbox-naam"></div>
+      <button class="lightbox-sluit" onclick="sluitLightbox()">✕ Sluiten</button>
     </div>
   </div>
 
