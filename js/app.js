@@ -560,15 +560,16 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && document.getElementById('modal-loc-bg').classList.contains('open')) slaatLocOp();
 });
 
-// ── Opstarten ──
-(async () => {
+async function toonApp() {
+  document.getElementById('login-scherm').style.display = 'none';
+  document.getElementById('app-wrap').classList.remove('verborgen');
   document.getElementById('tbody').innerHTML = '<tr><td colspan="9" class="leeg-cel">Gegevens laden...</td></tr>';
   [artikelen, categorieen, locaties, leveranciers] = await Promise.all([
-    dbGet(`${API_ART}?order=naam.asc`),
-    dbGet(`${API_CAT}?order=naam.asc`),
-    dbGet(`${API_LOC}?order=naam.asc`),
-    dbGet(`${API_LEV}?order=naam.asc`),
+    dbGet(API_ART + '?order=naam.asc'),
+    dbGet(API_CAT + '?order=naam.asc'),
+    dbGet(API_LOC + '?order=naam.asc'),
+    dbGet(API_LEV + '?order=naam.asc'),
   ]);
   vulDropdowns();
   render();
-})();
+}
