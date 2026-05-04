@@ -74,13 +74,13 @@
     </div>
   </main>
 
-  <!-- ── Categorieën pagina ── -->
+
   <main class="main verborgen" id="pagina-categorieen">
     <h1 class="page-title">Categorieën</h1>
     <p class="page-sub">Beheer de productcategorieën van uw assortiment</p>
-    <div class="cat-invoer">
-      <input type="text" id="nieuwe-cat" placeholder="Nieuwe categorie, bijv. Karpet" />
-      <button class="btn-add" onclick="voegCatToe()">+ Toevoegen</button>
+    <div class="pagina-toolbar">
+      <input type="text" id="zoek-cat" placeholder="Zoek categorie..." oninput="renderCategorieen()" />
+      <button class="btn-add" onclick="openNieuweCatModal()">+ Toevoegen</button>
     </div>
     <div class="tabel-wrap">
       <table>
@@ -90,13 +90,12 @@
     </div>
   </main>
 
-  <!-- ── Locaties pagina ── -->
   <main class="main verborgen" id="pagina-locaties">
     <h1 class="page-title">Locaties</h1>
     <p class="page-sub">Beheer de opslag- en showroomlocaties</p>
-    <div class="cat-invoer">
-      <input type="text" id="nieuwe-loc" placeholder="Nieuwe locatie, bijv. Showroom begane grond" />
-      <button class="btn-add" onclick="voegLocToe()">+ Toevoegen</button>
+    <div class="pagina-toolbar">
+      <input type="text" id="zoek-loc" placeholder="Zoek locatie..." oninput="renderLocaties()" />
+      <button class="btn-add" onclick="openNieuweLocModal()">+ Toevoegen</button>
     </div>
     <div class="tabel-wrap">
       <table>
@@ -106,10 +105,13 @@
     </div>
   </main>
 
-  <!-- ── Leveranciers pagina ── -->
   <main class="main verborgen" id="pagina-leveranciers">
     <h1 class="page-title">Leveranciers</h1>
     <p class="page-sub">Contactgegevens van uw leveranciers</p>
+    <div class="pagina-toolbar">
+      <input type="text" id="zoek-lev" placeholder="Zoek leverancier..." oninput="renderLeveranciers()" />
+      <button class="btn-add" onclick="openLevModal()">+ Toevoegen</button>
+    </div>
     <div class="tabel-wrap">
       <table>
         <thead><tr><th style="width:25%">Naam</th><th style="width:18%">Telefoon</th><th style="width:22%">E-mail</th><th style="width:20%">Website</th><th style="width:15%"></th></tr></thead>
@@ -154,17 +156,17 @@
     </div>
   </div>
 
-  <!-- ── Categorie modal ── -->
+  <!-- ── Categorie bewerken modal ── -->
   <div class="modal-bg" id="modal-cat-bg">
-    <div class="modal"><h2>Categorie bewerken</h2>
+    <div class="modal"><h2 id="modal-cat-titel">Categorie bewerken</h2>
       <div class="form-row"><label>Naam</label><input type="text" id="f-cat-naam" /></div>
       <div class="modal-btns"><button class="btn-annul" onclick="closeCatModal()">Annuleren</button><button class="btn-opsl" onclick="slaatCatOp()">Opslaan</button></div>
     </div>
   </div>
 
-  <!-- ── Locatie modal ── -->
+  <!-- ── Locatie bewerken modal ── -->
   <div class="modal-bg" id="modal-loc-bg">
-    <div class="modal"><h2>Locatie bewerken</h2>
+    <div class="modal"><h2 id="modal-loc-titel">Locatie bewerken</h2>
       <div class="form-row"><label>Naam</label><input type="text" id="f-loc-naam" /></div>
       <div class="modal-btns"><button class="btn-annul" onclick="closeLocModal()">Annuleren</button><button class="btn-opsl" onclick="slaatLocOp()">Opslaan</button></div>
     </div>

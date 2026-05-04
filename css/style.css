@@ -68,9 +68,9 @@ tbody td { padding: 10px 14px; font-size: 13px; color: var(--tekst); overflow: h
 .leeg-cel { text-align: center; padding: 3rem; color: var(--subtekst); font-size: 13px; letter-spacing: .06em; }
 .artikel-thumb { width: 36px; height: 36px; object-fit: cover; border: 1px solid var(--rand); cursor: pointer; display: block; }
 .artikel-thumb-leeg { width: 36px; height: 36px; background: var(--bg); border: 1px solid var(--rand); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--subtekst); }
-.cat-invoer { display: flex; gap: 10px; margin-bottom: 1.5rem; }
-.cat-invoer input { flex: 1; border: 1px solid var(--rand); background: var(--wit); padding: 0 14px; height: 38px; font-family: 'Jost', sans-serif; font-size: 13px; color: var(--tekst); outline: none; transition: border-color .2s; max-width: 400px; }
-.cat-invoer input:focus { border-color: var(--goud); }
+.pagina-toolbar { display: flex; gap: 10px; margin-bottom: 1.5rem; align-items: center; }
+.pagina-toolbar input[type="text"] { flex: 1; max-width: 360px; border: 1px solid var(--rand); background: var(--wit); padding: 0 14px; height: 38px; font-family: 'Jost', sans-serif; font-size: 13px; color: var(--tekst); outline: none; transition: border-color .2s; }
+.pagina-toolbar input[type="text"]:focus { border-color: var(--goud); }
 .modal-bg { display: none; position: fixed; inset: 0; background: rgba(28,26,23,.55); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
 .modal-bg.open { display: flex; }
 .modal { background: var(--wit); width: 440px; max-width: 100%; padding: 2rem; border-top: 3px solid var(--goud); max-height: 90vh; overflow-y: auto; }

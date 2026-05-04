@@ -315,10 +315,12 @@ async function opslaan() {
 
 // ── Categorieën ──
 function renderCategorieen() {
+  const zoek = (document.getElementById('zoek-cat')?.value || '').toLowerCase();
+  const lijst = categorieen.filter(c => !zoek || c.naam.toLowerCase().includes(zoek));
   const tbody = document.getElementById('tbody-cat');
-  tbody.innerHTML = categorieen.length === 0
-    ? '<tr><td colspan="3" class="leeg-cel">Nog geen categorieën aangemaakt</td></tr>'
-    : categorieen.map(c => {
+  tbody.innerHTML = lijst.length === 0
+    ? '<tr><td colspan="3" class="leeg-cel">Geen categorieën gevonden</td></tr>'
+    : lijst.map(c => {
         const aantal = artikelen.filter(a => a.cat === c.naam).length;
         return `<tr>
           <td style="font-weight:500">${c.naam}</td>
@@ -333,18 +335,17 @@ function renderCategorieen() {
       }).join('');
 }
 
-async function voegCatToe() {
-  const input = document.getElementById('nieuwe-cat');
-  const naam = input.value.trim();
-  if (!naam) { alert('Vul een naam in.'); return; }
-  if (categorieen.find(c => c.naam.toLowerCase() === naam.toLowerCase())) { alert('Deze categorie bestaat al.'); return; }
-  const nieuw = await dbPost(API_CAT, { naam });
-  if (nieuw) { categorieen.push(nieuw); categorieen.sort((a,b) => a.naam.localeCompare(b.naam)); }
-  input.value = ''; vulDropdowns(); renderCategorieen();
+function openNieuweCatModal() {
+  editCatId = null;
+  document.getElementById('modal-cat-titel').textContent = 'Nieuwe categorie';
+  document.getElementById('f-cat-naam').value = '';
+  document.getElementById('modal-cat-bg').classList.add('open');
+  setTimeout(() => document.getElementById('f-cat-naam').focus(), 50);
 }
 
 function bewerkCat(id) {
   editCatId = id;
+  document.getElementById('modal-cat-titel').textContent = 'Categorie bewerken';
   document.getElementById('f-cat-naam').value = categorieen.find(c => c.id === id)?.naam || '';
   document.getElementById('modal-cat-bg').classList.add('open');
   setTimeout(() => document.getElementById('f-cat-naam').focus(), 50);
@@ -354,11 +355,19 @@ function closeCatModal() { document.getElementById('modal-cat-bg').classList.rem
 async function slaatCatOp() {
   const naam = document.getElementById('f-cat-naam').value.trim();
   if (!naam) { alert('Vul een naam in.'); return; }
-  const oudNaam = categorieen.find(c => c.id === editCatId)?.naam;
-  const bijgewerkt = await dbPatch(`${API_CAT}?id=eq.${editCatId}`, { naam });
-  if (bijgewerkt) {
-    categorieen[categorieen.findIndex(c => c.id === editCatId)] = bijgewerkt;
-    artikelen.forEach(a => { if (a.cat === oudNaam) a.cat = naam; });
+  if (editCatId === null) {
+    // Nieuw
+    if (categorieen.find(c => c.naam.toLowerCase() === naam.toLowerCase())) { alert('Deze categorie bestaat al.'); return; }
+    const nieuw = await dbPost(API_CAT, { naam });
+    if (nieuw) { categorieen.push(nieuw); categorieen.sort((a,b) => a.naam.localeCompare(b.naam)); }
+  } else {
+    // Bewerken
+    const oudNaam = categorieen.find(c => c.id === editCatId)?.naam;
+    const bijgewerkt = await dbPatch(`${API_CAT}?id=eq.${editCatId}`, { naam });
+    if (bijgewerkt) {
+      categorieen[categorieen.findIndex(c => c.id === editCatId)] = bijgewerkt;
+      artikelen.forEach(a => { if (a.cat === oudNaam) a.cat = naam; });
+    }
   }
   closeCatModal(); vulDropdowns(); renderCategorieen(); render();
 }
@@ -375,10 +384,12 @@ async function verwijderCat(id) {
 
 // ── Locaties ──
 function renderLocaties() {
+  const zoek = (document.getElementById('zoek-loc')?.value || '').toLowerCase();
+  const lijst = locaties.filter(l => !zoek || l.naam.toLowerCase().includes(zoek));
   const tbody = document.getElementById('tbody-loc');
-  tbody.innerHTML = locaties.length === 0
-    ? '<tr><td colspan="3" class="leeg-cel">Nog geen locaties aangemaakt</td></tr>'
-    : locaties.map(l => {
+  tbody.innerHTML = lijst.length === 0
+    ? '<tr><td colspan="3" class="leeg-cel">Geen locaties gevonden</td></tr>'
+    : lijst.map(l => {
         const aantal = artikelen.filter(a => a.locatie === l.naam).length;
         return `<tr>
           <td style="font-weight:500">${l.naam}</td>
@@ -391,18 +402,17 @@ function renderLocaties() {
       }).join('');
 }
 
-async function voegLocToe() {
-  const input = document.getElementById('nieuwe-loc');
-  const naam = input.value.trim();
-  if (!naam) { alert('Vul een naam in.'); return; }
-  if (locaties.find(l => l.naam.toLowerCase() === naam.toLowerCase())) { alert('Deze locatie bestaat al.'); return; }
-  const nieuw = await dbPost(API_LOC, { naam });
-  if (nieuw) { locaties.push(nieuw); locaties.sort((a,b) => a.naam.localeCompare(b.naam)); }
-  input.value = ''; vulDropdowns(); renderLocaties();
+function openNieuweLocModal() {
+  editLocId = null;
+  document.getElementById('modal-loc-titel').textContent = 'Nieuwe locatie';
+  document.getElementById('f-loc-naam').value = '';
+  document.getElementById('modal-loc-bg').classList.add('open');
+  setTimeout(() => document.getElementById('f-loc-naam').focus(), 50);
 }
 
 function bewerkLoc(id) {
   editLocId = id;
+  document.getElementById('modal-loc-titel').textContent = 'Locatie bewerken';
   document.getElementById('f-loc-naam').value = locaties.find(l => l.id === id)?.naam || '';
   document.getElementById('modal-loc-bg').classList.add('open');
   setTimeout(() => document.getElementById('f-loc-naam').focus(), 50);
@@ -412,11 +422,17 @@ function closeLocModal() { document.getElementById('modal-loc-bg').classList.rem
 async function slaatLocOp() {
   const naam = document.getElementById('f-loc-naam').value.trim();
   if (!naam) { alert('Vul een naam in.'); return; }
-  const oudNaam = locaties.find(l => l.id === editLocId)?.naam;
-  const bijgewerkt = await dbPatch(`${API_LOC}?id=eq.${editLocId}`, { naam });
-  if (bijgewerkt) {
-    locaties[locaties.findIndex(l => l.id === editLocId)] = bijgewerkt;
-    artikelen.forEach(a => { if (a.locatie === oudNaam) a.locatie = naam; });
+  if (editLocId === null) {
+    if (locaties.find(l => l.naam.toLowerCase() === naam.toLowerCase())) { alert('Deze locatie bestaat al.'); return; }
+    const nieuw = await dbPost(API_LOC, { naam });
+    if (nieuw) { locaties.push(nieuw); locaties.sort((a,b) => a.naam.localeCompare(b.naam)); }
+  } else {
+    const oudNaam = locaties.find(l => l.id === editLocId)?.naam;
+    const bijgewerkt = await dbPatch(`${API_LOC}?id=eq.${editLocId}`, { naam });
+    if (bijgewerkt) {
+      locaties[locaties.findIndex(l => l.id === editLocId)] = bijgewerkt;
+      artikelen.forEach(a => { if (a.locatie === oudNaam) a.locatie = naam; });
+    }
   }
   closeLocModal(); vulDropdowns(); renderLocaties(); render();
 }
@@ -433,10 +449,12 @@ async function verwijderLoc(id) {
 
 // ── Leveranciers ──
 function renderLeveranciers() {
+  const zoek = (document.getElementById('zoek-lev')?.value || '').toLowerCase();
+  const lijst = leveranciers.filter(l => !zoek || l.naam.toLowerCase().includes(zoek) || (l.email||'').toLowerCase().includes(zoek));
   const tbody = document.getElementById('tbody-lev');
-  tbody.innerHTML = leveranciers.length === 0
-    ? '<tr><td colspan="5" class="leeg-cel">Nog geen leveranciers aangemaakt</td></tr>'
-    : leveranciers.map(l => `<tr>
+  tbody.innerHTML = lijst.length === 0
+    ? '<tr><td colspan="5" class="leeg-cel">Geen leveranciers gevonden</td></tr>'
+    : lijst.map(l => `<tr>
         <td style="font-weight:500">${l.naam}</td>
         <td style="color:var(--subtekst)">${l.telefoon || '—'}</td>
         <td style="color:var(--subtekst)">${l.email || '—'}</td>
@@ -536,10 +554,10 @@ document.getElementById('modal-cat-bg').addEventListener('click', e => { if (e.t
 document.getElementById('modal-loc-bg').addEventListener('click', e => { if (e.target === e.currentTarget) closeLocModal(); });
 document.getElementById('modal-lev-bg').addEventListener('click', e => { if (e.target === e.currentTarget) closeLevModal(); });
 document.getElementById('lightbox').addEventListener('click', e => { if (e.target === e.currentTarget) sluitLightbox(); });
-document.getElementById('nieuwe-cat').addEventListener('keydown', e => { if (e.key === 'Enter') voegCatToe(); });
-document.getElementById('nieuwe-loc').addEventListener('keydown', e => { if (e.key === 'Enter') voegLocToe(); });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeModal(); closeCatModal(); closeLocModal(); closeLevModal(); sluitLightbox(); }
+  if (e.key === 'Enter' && document.getElementById('modal-cat-bg').classList.contains('open')) slaatCatOp();
+  if (e.key === 'Enter' && document.getElementById('modal-loc-bg').classList.contains('open')) slaatLocOp();
 });
 
 // ── Opstarten ──
