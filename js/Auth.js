@@ -50,6 +50,7 @@ async function uitloggen() {
   document.getElementById('login-fout').textContent = '';
 }
 
+document.getElementById('login-btn').addEventListener('click', inloggen);
 document.getElementById('login-ww').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') inloggen();
 });
